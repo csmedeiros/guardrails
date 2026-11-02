@@ -11,3 +11,5 @@
   paid API loop, in the foreground or background, until the user has said yes to the plan you showed. Starting several models
   or several datasets "to be thorough" without approval is a violation. Use AskUserQuestion only when a decision is open;
   otherwise show the plan and wait.
+
+- Guard models are chosen in `configs/guard_models.yaml` (`GUARD_MODEL`); the HF token is in `.env` (git-ignored), never print it. Do not discard the training pipeline when changing how the model is distributed.

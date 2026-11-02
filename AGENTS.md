@@ -21,6 +21,7 @@ input rail. Read `README.md` first; details in `docs/`.
   models or runs you will leave out. Wait for the user's yes. A request like "compare with X" or "run the benchmark" is not
   approval of the plan you choose. The approval covers only what was presented: adding a model, dataset, judge or repeating a
   run needs a new approval. If the user narrows the plan, stop the extra runs at once and report what was stopped.
+- **Published model:** `caiosmedeiros/prompt-safety-v1` on Hugging Face (= `models/guard_v3_tuned_A`, CC BY-NC 4.0). The training pipeline stays in the repo; the HF download is only a shortcut for using the model. Never log prompt text in the API.
 - Helper scripts for tooling/automation are Node.js; the ML stack stays Python.
 
 ## Commands (repo root; `make -n <t>` to preview)
@@ -34,6 +35,7 @@ input rail. Read `README.md` first; details in `docs/`.
 | regenerate synthetic data (GPU) | `make setup-vllm`, `make vllm-up` (blocks), then `make gen` |
 | independent eval + Spanish train split | `make data-ext embed-ext`, `make stage3 eval-ext` |
 | serve API / NeMo demo | `make serve` (:8100), `make demo` |
+| pick the served guard model | `GUARD_MODEL=<name> make serve`; names in `configs/guard_models.yaml` (default `prompt_safety_v1`, downloaded from Hugging Face on first use) |
 | MLflow UI | `make mlflow-ui` (:5000) |
 | paper | `make paper` (tectonic) |
 
@@ -44,7 +46,7 @@ verification is reproducing the numbers in `docs/REPRODUCE.md` and the 3-blocked
 
 `src/guardrails/` pipeline code, split by job: `core/` (GuardNet, GuardModel, int8 encoder), `serving/` (FastAPI), `data/` (prep, embed),
 `synth/` (Data Designer generators, Jev judge), `training/` (heads, stage 2/3, v3 pairs, fine-tuning, Optuna), `evaluation/` (eval_heads, eval_e2e),
-`tracking.py` (MLflow entry point shared by all) · `guardrails_config/` NeMo rail · `models/head.npz` selected head · `data/synthetic/` shipped
+`core/registry.py` + `configs/guard_models.yaml` (guard model selection; third-party guards in `models/third_party/`, git-ignored), `tracking.py` (MLflow entry point shared by all) · `guardrails_config/` NeMo rail · `models/head.npz` selected head · `data/synthetic/` shipped
 synthetic set · `paper/` IEEE LaTeX · `docs/` ARCHITECTURE, REPRODUCE, RESULTS · `notes/findings.md` research notes ·
 `.claude/skills/` agent skills (`reproduce`, `ask-guardrails`).
 
