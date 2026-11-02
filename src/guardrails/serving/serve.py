@@ -48,11 +48,10 @@ def health():
 
 @app.post("/classify", response_model=Res)
 def classify(r: Req):
-    # logger.info(f"Classifying text using model{state["m"].name}: {r.text}")
     return state["m"].classify([r.text])[0]
 
 
 @app.post("/classify_batch", response_model=list[Res])
 def classify_batch(r: BatchReq):
-    app_logger.info(f"Classifying texts using model{state["m"].name}: {r.texts}")
+    app_logger.info("classify_batch model=%s n=%d", getattr(state["m"], "name", "env"), len(r.texts))  # never log prompt text
     return state["m"].classify(r.texts)
