@@ -1,0 +1,32 @@
+.venv/
+.venv-vllm/
+.vscode/
+__pycache__/
+.env
+
+# regenerable (see docs/REPRODUCE.md)
+embeddings/
+mlflow/
+mlruns/
+logs_*.txt
+reports/
+
+# data: raw + processed come from the CC BY-NC source dataset, so they are rebuilt, not shipped.
+# The 6,000-row synthetic set is shipped because LLM generation is not bit-reproducible.
+data/raw/
+data/processed/
+data/synthetic/*
+!data/synthetic/synth_v1.parquet
+
+# only the selected head is shipped
+models/*
+!models/head.npz
+!models/head_es.npz
+
+# LaTeX build junk (main.pdf is kept)
+paper/*.aux
+paper/*.log
+
+# 8-bit encoder, regenerable with quantize_encoder.py
+models/encoder_int8.pt
+models/third_party/

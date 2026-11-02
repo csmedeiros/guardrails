@@ -1,0 +1,8 @@
+define bot refuse to respond
+  "Sorry, I can't help with that request."
+
+define flow guard check input
+  $unsafe = execute guard_is_unsafe(text=$user_message)
+  if $unsafe
+    bot refuse to respond
+    stop

@@ -1,0 +1,4 @@
+rails:
+  input:
+    flows:
+      - guard check input

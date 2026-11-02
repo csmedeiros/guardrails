@@ -1,0 +1,23 @@
+[project]
+name = "guardrails-poc"
+version = "0.0.1"
+description = "PoC: multilingual (EN/PT-BR/ES) binary guard classifier"
+requires-python = ">=3.12"
+dependencies = [
+    "mlflow>=3",
+    "scikit-learn",
+    "pandas",
+    "numpy",
+    "torch>=2.15.0",
+    "sentence-transformers>=6.2.0",
+    "pyarrow>=24",
+    "data-designer>=0.9",
+    "matplotlib>=3.11.2",
+    "fastapi>=0.141.1",
+    "uvicorn>=0.54.0",
+    "nemoguardrails>=0.24.1",
+    "optuna>=5",
+]
+
+[tool.uv]
+package = false

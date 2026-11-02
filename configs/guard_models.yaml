@@ -1,0 +1,34 @@
+# Guardrail models the API can serve. Choose one with GUARD_MODEL=<name> (env var) or change `default`.
+#   GUARD_MODEL=qwen3guard_gen_0_6b make serve
+# type: head       = our MLP head on a frozen bge-m3 (plain .npz, threshold stored in the file)
+#       guardnet   = our single merged model (bge-m3 + MLP in one network, directory with model.safetensors)
+#       qwen3guard = Qwen3Guard-Gen (third-party generative guard, prompt moderation; reads the Safe/Controversial/Unsafe token)
+# threshold: optional override; otherwise the model's own (our models store it, qwen3guard uses 0.5).
+default: ours_v3_tuned_A
+
+models:
+  ours_v1_head:
+    type: head
+    path: models/head.npz
+    description: Shipped v1 head (BeaverTails + synthetic v1). Threshold 0.017, 95% recall target.
+  ours_v2_B:
+    type: guardnet
+    path: models/guard_v2_B
+    description: Enterprise v2 data, top 6 transformer layers tuned.
+  ours_v3_A:
+    type: guardnet
+    path: models/guard_v3_A
+    description: v3 paired data, merged single model, MLP trained on frozen encoder. Threshold 0.5.
+  ours_v3_B:
+    type: guardnet
+    path: models/guard_v3_B
+    description: v3 paired data, top 6 transformer layers tuned. Threshold 0.5.
+  ours_v3_tuned_A:
+    type: guardnet
+    path: models/guard_v3_tuned_A
+    description: v3 paired data, Optuna-tuned MLP (1024/256), merged single model. Threshold 0.5.
+  qwen3guard_gen_0_6b:
+    type: qwen3guard
+    path: models/third_party/qwen3guard-gen-0.6b
+    block_controversial: true   # "Controversial" counts as unsafe (enterprise: block when in doubt)
+    description: Qwen3Guard-Gen-0.6B (Alibaba, Apache-2.0), 119 languages, prompt moderation. Third-party reference model.
