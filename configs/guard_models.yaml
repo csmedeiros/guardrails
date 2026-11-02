@@ -3,10 +3,16 @@
 # type: head       = our MLP head on a frozen bge-m3 (plain .npz, threshold stored in the file)
 #       guardnet   = our single merged model (bge-m3 + MLP in one network, directory with model.safetensors)
 #       qwen3guard = Qwen3Guard-Gen (third-party generative guard, prompt moderation; reads the Safe/Controversial/Unsafe token)
+# hf_repo:   optional; if `path` is missing locally the model is downloaded from Hugging Face into `path` on first use.
 # threshold: optional override; otherwise the model's own (our models store it, qwen3guard uses 0.5).
-default: ours_v3_tuned_A
+default: prompt_safety_v1
 
 models:
+  prompt_safety_v1:
+    type: guardnet
+    path: models/prompt-safety-v1
+    hf_repo: caiosmedeiros/prompt-safety-v1
+    description: Published model (= ours_v3_tuned_A), downloaded from Hugging Face on first use. CC BY-NC 4.0.
   ours_v1_head:
     type: head
     path: models/head.npz

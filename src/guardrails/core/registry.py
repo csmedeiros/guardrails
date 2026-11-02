@@ -21,6 +21,9 @@ def load_guard(name: str | None = None):
     if name not in cfg["models"]:
         raise ValueError(f"unknown guard model {name!r}; choose one of {sorted(cfg['models'])}")
     c, device = cfg["models"][name], os.environ.get("GUARD_DEVICE", "cpu")
+    if c.get("hf_repo") and not os.path.exists(os.path.join(c["path"], "model.safetensors")):
+        from huggingface_hub import snapshot_download
+        snapshot_download(c["hf_repo"], local_dir=c["path"], token=os.environ.get("HF_TOKEN"))
     if c["type"] == "qwen3guard":
         from guardrails.core.qwen3guard import Qwen3Guard
         m = Qwen3Guard(c["path"], c.get("block_controversial", True), os.environ.get("GUARD_DEVICE", "cuda"), c.get("threshold", 0.5))

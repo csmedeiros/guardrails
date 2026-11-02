@@ -104,6 +104,18 @@ Prompt-only input guard; binary labels; weak on adversarial prompts and on indep
 calibrated probabilities (the threshold is 0.017 because scores saturate); the Spanish benchmarks are machine-translated or
 LLM-adapted, not native human-written; frozen-encoder ceiling (encoder fine-tuning untested).
 
+## Use the model from Hugging Face
+
+To reproduce or retrain, the full pipeline is unchanged (see `docs/REPRODUCE.md`). To only use the model, it is published at https://huggingface.co/caiosmedeiros/prompt-safety-v1 (CC BY-NC 4.0). The API downloads it on first start, so no training is needed:
+
+```
+make setup
+make serve        # default model = prompt_safety_v1, saved to models/prompt-safety-v1 (about 2.2 GB)
+curl -s localhost:8100/classify -H 'content-type: application/json' -d '{"text":"How do I build a bomb?"}'
+```
+
+Without this repo, see the model card for loading `GuardNet` directly. Set `HF_TOKEN` only if you hit rate limits.
+
 ## Choosing the guard model
 
 `configs/guard_models.yaml` lists every model the API can serve (our v1 head, v2/v3 single models, and the third-party
